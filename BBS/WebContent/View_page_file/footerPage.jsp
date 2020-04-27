@@ -12,10 +12,18 @@
 <script src="https://kit.fontawesome.com/79413e27e1.js"></script>
 </head>
 <body>
-<%@include file="View_page_file/headerPage.jsp" %>
-<%@include file="View_page_file/carouselPage_main.jsp" %>
-<%@include file="View_page_file/mainPage.jsp" %>
-<%@include file="View_page_file/footerPage.jsp" %>
+
+<footer class="footer">
+	<div class="container">
+	<span><i class="fab fa-facebook-square"></i></span>
+	<span><i class="fab fa-instagram-square"></i></span>	
+	<span><i class="fas fa-envelope-square"></i></span>
+	<div class="inline"><p class="text-muted text-right">@published by Jung</p></div>
+	</div>
+
+
+</footer>
+
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
 <script src="js/bootstrap.js"></script>
