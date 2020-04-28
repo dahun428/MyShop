@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+<%@ include file="../session_id/session_check_id.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +14,7 @@
 </head>
 <body>
 <%@include file="View_page_file/headerPage.jsp" %>
+<%@include file="View_page_file/navPage.jsp"  %>
 <%@include file="View_page_file/carouselPage_main.jsp" %>
 <%@include file="View_page_file/mainPage.jsp" %>
 <%@include file="View_page_file/footerPage.jsp" %>

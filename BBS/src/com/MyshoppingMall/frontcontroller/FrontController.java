@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.MyshoppingMall.command.BJoinCommand;
 import com.MyshoppingMall.command.Bcommand;
 import com.MyshoppingMall.command.BloginCommand;
 
@@ -52,6 +53,14 @@ public class FrontController extends HttpServlet {
 			command = new BloginCommand();
 			command.execute(request, response);
 			viewPage = "CheckPage/loginCheck.jsp";
+		} else if(com.equals("/join.do")){
+			command = new BJoinCommand();
+			command.execute(request, response);
+			viewPage = "CheckPage/joinCheck.jsp";
+		} else if(com.equals("/logout.do")) {
+			viewPage = "CheckPage/logoutCheck.jsp";
+		} else if(com.equals("/index.do")) {
+			viewPage = "index.jsp";
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher(viewPage);

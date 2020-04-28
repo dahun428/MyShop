@@ -1,5 +1,5 @@
 <%@page import="java.io.PrintWriter"%>
-<%@page import="com.MyshoppingMall.bbs.util.LoginCheckFunction"%>
+<%@page import="com.MyshoppingMall.bbs.util.UserCheckFunction"%>
 <%@page import="com.MyshoppingMall.bbs.dao.UserDAO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
@@ -19,7 +19,7 @@ if(userId != null){
 	PrintWriter writer = response.getWriter();
 	writer.println("<script>");
 	writer.println("alert('이미 로그인 되어있습니다.');");
-	writer.println("location.href = 'index.jsp';");
+	writer.println("location.href = 'index.do';");
 	writer.println("</script>");
 }
 %>    
@@ -33,25 +33,25 @@ if(userId != null){
 </head>
 <body>
 <c:choose>
-	<c:when test="${login == LoginCheckFunction.NO_EXIST_ID }">
+	<c:when test="${login == UserCheckFunction.NO_EXIST_ID }">
 		<script>
 			alert('아이디가 존재하지 않습니다.');
 			history.go(-1);
 		</script>
 	</c:when>
-	<c:when test="${login == LoginCheckFunction.NO_EQUALS_PASSWORD }">
+	<c:when test="${login == UserCheckFunction.NO_EQUALS_PASSWORD }">
 		<script>
 			alert('비밀번호가 틀립니다.');
 			history.go(-1);
 		</script>
 	</c:when>
-	<c:when test="${login == LoginCheckFunction.SUCCESS_LOGIN }">
+	<c:when test="${login == UserCheckFunction.SUCCESS_LOGIN }">
 		<%
 			userId = (String) request.getAttribute("userId");
 			session.setAttribute("userId", userId);
 		%>
 		<script>
-			location.href ="index.jsp";
+			location.href ="index.do";
 		</script>
 	
 	</c:when>

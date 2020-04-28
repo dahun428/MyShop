@@ -35,23 +35,40 @@ if(userId != null){
 		<div class="col col-lg-2"></div>
 		<div class="col-md-auto">
 			<div class="jumbotron">
-				<form action="login.do" method="post">
-					<h3 style="text-align:center">로그인화면</h3>
+				<form action="join.do" method="post" name="join_form">
+					<h3 style="text-align:center;">회원가입 화면</h3>
 					<div class="form-group">
-						<input type="text" class="form-control"  placeholder="아이디" name="userId" maxlength="20"/>
+						<input type="text" class="form-control" placeholder="아이디" name="userId" maxlength="20"/>
 					</div>
 					<div class="form-group">
-						<input type="text" class="form-control" placeholder="비밀번호" name="userPassword" maxlength="20"/>
+						<input type="password" class="form-control" placeholder="비밀번호" name="userPassword" maxlength="20"/>
 					</div>
-						<input type="submit" class="btn btn-dark form-control" value="로그인"/>
-				
+					<div class="form-group">
+						<input type="password" class="form-control" placeholder="비밀번호 확인" name="userPassword_chk" maxlength="20"/>
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="이름" name="userName" maxlength="20"/>
+					</div>
+					<div class="form-group" style="text-align:center;">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-dark active">
+								<input type="radio" name="userGender" autocomplete="off" value="남자" checked/>남자
+							</label>
+							<label class="btn btn-dark">
+								<input type="radio" name="userGender" autocomplete="off" value="여자" />여자
+							</label>				
+						</div>
+						<div class="form-group">
+							<input type="email" class="form-control" placeholder="이메일" name="userEmail" maxlength="20"/>
+						</div>
+					</div>
+					<input type="submit" class="btn btn-dark form-control" value="회원가입"/>
 				</form>
 			</div>
 		</div>
 		<div class="col col-lg-2"></div>
 	</div>
 </div>
-
 <%@include file="../View_page_file/footerPage.jsp" %>
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>

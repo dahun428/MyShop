@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.MyshoppingMall.bbs.dao.UserDAO;
-import com.MyshoppingMall.bbs.util.LoginCheckFunction;
+import com.MyshoppingMall.bbs.util.UserCheckFunction;
 
 public class BloginCommand implements Bcommand{
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
@@ -13,8 +13,10 @@ public class BloginCommand implements Bcommand{
 		String userPassword = request.getParameter("userPassword");
 		
 		UserDAO userDao = UserDAO.getInstance();
-		int login = userDao.login(userId, userPassword);
+		int login = userDao.loginUser(userId, userPassword);
 		request.setAttribute("login", login);
-		if(login == LoginCheckFunction.SUCCESS_LOGIN)request.setAttribute("userId", userId);
+		if(login == UserCheckFunction.SUCCESS_LOGIN) {
+			request.setAttribute("userId", userId);	
+		}
 	}
 }
