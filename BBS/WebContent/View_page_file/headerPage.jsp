@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
-
+<%@ include file="../session_id/session_check_id.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>

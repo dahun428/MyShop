@@ -9,9 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.MyshoppingMall.command.BBSCommand;
+import com.MyshoppingMall.command.BBSWriteCommand;
+import com.MyshoppingMall.command.BBSViewCommand;
 import com.MyshoppingMall.command.BJoinCommand;
 import com.MyshoppingMall.command.Bcommand;
-import com.MyshoppingMall.command.BloginCommand;
+import com.MyshoppingMall.command.BLoginCommand;
 
 /**
  * Servlet implementation class FrontController
@@ -50,17 +53,29 @@ public class FrontController extends HttpServlet {
 		String com = url.substring(conPath.length());
 		
 		if(com.equals("/login.do")) {
-			command = new BloginCommand();
+			command = new BLoginCommand();
 			command.execute(request, response);
 			viewPage = "CheckPage/loginCheck.jsp";
-		} else if(com.equals("/join.do")){
+		} else if (com.equals("/join.do")){
 			command = new BJoinCommand();
 			command.execute(request, response);
 			viewPage = "CheckPage/joinCheck.jsp";
-		} else if(com.equals("/logout.do")) {
+		} else if (com.equals("/logout.do")) {
 			viewPage = "CheckPage/logoutCheck.jsp";
-		} else if(com.equals("/index.do")) {
+		} else if (com.equals("/index.do")) {
 			viewPage = "index.jsp";
+		} else if (com.equals("/BBSmainPage.do")) {
+			command = new BBSCommand();
+			command.execute(request, response);
+			viewPage = "BBSmainPage.jsp";
+		} else if (com.equals("/BBSwrite.do")) {
+			command = new BBSWriteCommand();
+			command.execute(request, response);
+			viewPage = "bbsWriteCheck.jsp";
+		} else if(com.equals("/BBSviewPage.do")) {
+			command = new BBSViewCommand();
+			command.execute(request, response);
+			viewPage = "BBSviewPage.jsp";
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher(viewPage);

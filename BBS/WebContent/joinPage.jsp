@@ -2,18 +2,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>    
-<%@ include file ="../session_id/session_check_id.jsp" %>
-<%
-request.setCharacterEncoding("utf-8");
-
-if(userId != null){
-	PrintWriter writer = response.getWriter();
-	writer.println("<script>");
-	writer.println("alert('이미 로그인 되어있습니다.');");
-	writer.println("location.href = 'index.jsp';");
-	writer.println("</script>");
-}
-%>    
 
     
 <!DOCTYPE html>
@@ -26,9 +14,21 @@ if(userId != null){
 <title>MyShoppingMall</title>
 <link href="css/bootstrap.css" rel="stylesheet">
 <script src="https://kit.fontawesome.com/79413e27e1.js"></script>
+<script src="js/check_js_function.js"></script>
 </head>
 <body>
 <%@include file="../View_page_file/headerPage.jsp" %>
+<%
+request.setCharacterEncoding("utf-8");
+
+if(userId != null){
+	PrintWriter writer = response.getWriter();
+	writer.println("<script>");
+	writer.println("alert('이미 로그인 되어있습니다.');");
+	writer.println("location.href = 'index.jsp';");
+	writer.println("</script>");
+}
+%>    
 
 <div class="container">
 	<div class="row justify-content-md-center" style="padding-top:20px;">
@@ -62,7 +62,7 @@ if(userId != null){
 							<input type="email" class="form-control" placeholder="이메일" name="userEmail" maxlength="20"/>
 						</div>
 					</div>
-					<input type="submit" class="btn btn-dark form-control" value="회원가입"/>
+					<input type="button" class="btn btn-dark form-control" value="회원가입" onclick="infoConfirm();"/>
 				</form>
 			</div>
 		</div>

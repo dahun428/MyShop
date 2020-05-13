@@ -28,7 +28,7 @@
 					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				카테고리	
 				</a>
-				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+			    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<a href="#" class="dropdown-item">기초케어</a>
 					<a href="#" class="dropdown-item">메이크업</a>
 					<a href="#" class="dropdown-item">화장소품</a>
@@ -46,6 +46,9 @@
 			</li>
 			<li class="nav-item">
 				<a href="#" class="nav-link">이벤트</a>
+			</li>
+			<li class="nav-item">
+				<a href="BBSmainPage.do" class="nav-link">게시판</a>
 			</li>
 		</ul>
 	</div>

@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
-<%@ include file="../session_id/session_check_id.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,4 +21,4 @@
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
 <script src="js/bootstrap.js"></script>
 </body>
-</html>
+</html>	

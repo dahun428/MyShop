@@ -2,18 +2,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>    
-<%@ include file ="../session_id/session_check_id.jsp" %>
-<%
-request.setCharacterEncoding("utf-8");
-
-if(userId != null){
-	PrintWriter writer = response.getWriter();
-	writer.println("<script>");
-	writer.println("alert('이미 로그인 되어있습니다.');");
-	writer.println("location.href = 'index.jsp';");
-	writer.println("</script>");
-}
-%>    
 
     
 <!DOCTYPE html>
@@ -28,7 +16,19 @@ if(userId != null){
 <script src="https://kit.fontawesome.com/79413e27e1.js"></script>
 </head>
 <body>
+
 <%@include file="../View_page_file/headerPage.jsp" %>
+<%
+request.setCharacterEncoding("utf-8");
+
+if(userId != null){
+	PrintWriter writer = response.getWriter();
+	writer.println("<script>");
+	writer.println("alert('이미 로그인 되어있습니다.');");
+	writer.println("location.href = 'index.jsp';");
+	writer.println("</script>");
+}
+%>    
 
 <div class="container">
 	<div class="row justify-content-md-center" style="padding-top:20px;">
@@ -41,7 +41,7 @@ if(userId != null){
 						<input type="text" class="form-control"  placeholder="아이디" name="userId" maxlength="20"/>
 					</div>
 					<div class="form-group">
-						<input type="text" class="form-control" placeholder="비밀번호" name="userPassword" maxlength="20"/>
+						<input type="password" class="form-control" placeholder="비밀번호" name="userPassword" maxlength="20"/>
 					</div>
 						<input type="submit" class="btn btn-dark form-control" value="로그인"/>
 				

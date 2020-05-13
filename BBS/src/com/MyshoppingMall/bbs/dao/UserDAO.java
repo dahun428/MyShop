@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import com.MyshoppingMall.bbs.util.ConnUtil;
 import com.MyshoppingMall.bbs.util.JoinCheckFunction;
 import com.MyshoppingMall.bbs.util.LoginCheckFunction;
@@ -35,9 +37,11 @@ public class UserDAO {
 			conn = ConnUtil.getConnection();
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, userId);
+			
+			String encryptionPw = DigestUtils.sha256Hex(userPassword);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				if(rs.getString("user_password").equals(userPassword)) {
+				if(rs.getString("user_password").equals(encryptionPw)) {
 					return LoginCheckFunction.SUCCESS_LOGIN;
 				} else {
 					return LoginCheckFunction.NO_EQUALS_PASSWORD;
@@ -108,7 +112,8 @@ public class UserDAO {
 			conn = ConnUtil.getConnection();
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, user.getUserId());
-			pstmt.setString(2, user.getUserPassword());
+			String encryptionPw = DigestUtils.sha256Hex(user.getUserPassword());
+			pstmt.setString(2, encryptionPw);
 			pstmt.setString(3, user.getUserName());
 			pstmt.setString(4, user.getUserGender());
 			pstmt.setString(5, user.getUserEmail());
@@ -162,6 +167,11 @@ public class UserDAO {
 		}
 		return JoinCheckFunction.NON_EXIST_USER;
 	}
+	/**
+	 * 회원탈퇴시 사용할 메소드, userId 와 userPassword를 입력받아 해당 회원을 DB에서 삭제한다.	
+	 * @param userId
+	 * @param userPassword
+	 */
 	public void DeleteUser(String userId, String userPassword) {
 		
 		String query ="DELETE FROM BBS_USER WHERE USER_ID = ? AND USER_PASSWORD =  ? ";
@@ -170,8 +180,43 @@ public class UserDAO {
 			conn = ConnUtil.getConnection();
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, userId);
-			pstmt.setString(2, userPassword);
+			
+			String encryptionPw = DigestUtils.sha256Hex(userPassword);
+			pstmt.setString(2, encryptionPw);
 			pstmt.executeQuery();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				pstmt.close();
+				conn.close();
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	/**
+	 * 업데이트 할 user 객체를 전달 받고, userPasswor 변수를 전달받아, id와 password가 일치하는 아이디의 패스워드, email을 수정한다.  
+	 * @param user
+	 * @param userPassword
+	 */
+	public void updateUser(User user, String userPassword) {
+		
+		String query = "UPDATE BBS_USER"
+					+ " SET user_password = ?, user_email = ? "
+					+ " WHERE USER_ID = ? AND USER_PASSWORD = ?";
+		
+		try {
+			conn = ConnUtil.getConnection();
+			pstmt = conn.prepareStatement(query);
+			String encryptionPw = DigestUtils.sha256Hex(user.getUserPassword());
+			pstmt.setString(1, encryptionPw);
+			pstmt.setString(2, user.getUserEmail());
+			pstmt.setString(3, user.getUserId());
+			pstmt.setString(4, userPassword);
+			
 			
 		} catch(Exception e) {
 			e.printStackTrace();
