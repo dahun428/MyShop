@@ -68,6 +68,10 @@ public class FrontController extends HttpServlet {
 			command = new BBSCommand();
 			command.execute(request, response);
 			viewPage = "BBSmainPage.jsp";
+		} else if (com.equals("/BBSsearch.do")) {
+			command = new BBSCommand();
+			command.execute(request, response);
+			viewPage = "BBSmainPage.do";
 		} else if (com.equals("/BBSwrite.do")) {
 			command = new BBSWriteCommand();
 			command.execute(request, response);

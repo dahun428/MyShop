@@ -38,8 +38,12 @@
 				<tbody>
 					<c:if test="${bbsList.hasNoBbs() }">
 						<tr>
+							<td></td>
 							<td>게시글이 없습니다.</td>
+							<td></td>
+							<td></td>
 						</tr>
+						
 					</c:if>
 					<c:forEach items="${bbsList.content }" var="bbs">
 						<tr>
@@ -59,39 +63,105 @@
 			<div class="col-md-4 ml-md-auto">
 				<ul class="pagination">
 					<c:if test="${bbsList.hasBbs() }">
-						<c:if test="${bbsList.startPage >5 }">
-							<a href="BBSmainPage.do?pageNo=${bbsList.startPage-5}">[이전]</a>
-						</c:if>
-						<c:forEach var="pNo" begin="${bbsList.startPage }"
-							end="${bbsList.endPage }">
+						<c:if test="${bbsList.searchValue != null }">
+
 							<c:choose>
-								<c:when test="${pNo == bbsList.currentPage }">
-									<li class="page-item active" aria-current="page"><a
-										class="page-link" href="BBSmainPage.do?pageNo=${pNo }">${pNo }<span
-											class="sr-only">(current)</span>
-									</a></li>
+								<c:when test="${bbsList.startPage >5 }">
+									<li class="page-item"><a class="page-link"
+										href="BBSsearch.do?pageNo=${bbsList.startPage-5 }&searchFilter=${bbsList.searchFilter}&searchValue=${bbsList.searchValue}">Prev</a></li>
 								</c:when>
 								<c:otherwise>
-									<li class="page-item"><a class="page-link"
-										href="BBSmainPage.do?pageNo=${pNo }">${pNo }</a></li>
+									<li class="page-item disabled"><a class="page-link"
+										href="BBSsearch.do?pageNo=${bbsList.startPage-5 }&searchFilter=${bbsList.searchFilter}&searchValue=${bbsList.searchValue}"
+										tabindex="-1" aria-disabled="true">Prev</a></li>
 								</c:otherwise>
 							</c:choose>
-						</c:forEach>
-						<c:if test="${bbsList.endPage < bbsList.totalPage }">
-							<a href="BBSmainPage.do?pageNo=${bbsList.startPage+5 }">[다음]</a>
+
+							<c:forEach var="pNo" begin="${bbsList.startPage }"
+								end="${bbsList.endPage }">
+								<c:choose>
+									<c:when test="${pNo == bbsList.currentPage }">
+										<li class="page-item active" aria-current="page"><a
+											class="page-link"
+											href="BBSsearch.do?pageNo=${pNo }&searchFilter=${bbsList.searchFilter}&searchValue=${bbsList.searchValue}">${pNo }<span
+												class="sr-only">(current)</span>
+										</a></li>
+									</c:when>
+									<c:otherwise>
+										<li class="page-item"><a class="page-link"
+											href="BBSsearch.do?pageNo=${pNo }&searchFilter=${bbsList.searchFilter}&searchValue=${bbsList.searchValue}">${pNo }</a></li>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+
+							<c:choose>
+								<c:when test="${bbsList.endPage < bbsList.totalPage }">
+									<li class="page-item"><a class="page-link"
+										href="BBSsearch.do?pageNo=${bbsList.startPage+5 }&searchFilter=${bbsList.searchFilter}&searchValue=${bbsList.searchValue}">Next</a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="page-item disabled"><a class="page-link"
+										href="BBSsearch.do?pageNo=${bbsList.startPage+5 }&searchFilter=${bbsList.searchFilter}&searchValue=${bbsList.searchValue}"
+										tabindex="-1" aria-disabled="true">Next</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:if>
+
+						<c:if test="${bbsList.searchValue == null }">
+							<c:choose>
+								<c:when test="${bbsList.startPage >5 }">
+									<li class="page-item"><a class="page-link"
+										href="BBSmainPage.do?pageNo=${bbsList.startPage-5}">Prev</a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="page-item disabled"><a class="page-link"
+										href="BBSmainPage.do?pageNo=${bbsList.startPage-5}"
+										tabindex="-1" aria-disabled="true">Prev</a></li>
+								</c:otherwise>
+							</c:choose>
+
+							<c:forEach var="pNo" begin="${bbsList.startPage }"
+								end="${bbsList.endPage }">
+								<c:choose>
+									<c:when test="${pNo == bbsList.currentPage }">
+										<li class="page-item active" aria-current="page"><a
+											class="page-link" href="BBSmainPage.do?pageNo=${pNo }">${pNo }<span
+												class="sr-only">(current)</span>
+										</a></li>
+									</c:when>
+									<c:otherwise>
+										<li class="page-item"><a class="page-link"
+											href="BBSmainPage.do?pageNo=${pNo }">${pNo }</a></li>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+
+							<c:choose>
+								<c:when test="${bbsList.endPage < bbsList.totalPage }">
+									<li class="page-item"><a class="page-link"
+										href="BBSmainPage.do?pageNo=${bbsList.startPage+5}">Next</a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="page-item disabled"><a class="page-link"
+										href="BBSmainPage.do?pageNo=${bbsList.startPage+5}"
+										tabindex="-1" aria-disabled="true">Next</a></li>
+								</c:otherwise>
+							</c:choose>
 						</c:if>
 					</c:if>
 				</ul>
 			</div>
 			<div class="col-md-4 ml-md-auto">
-				<form class="form-inline my-2 my-lg-0" method="get" name="bbsSearchForm">
+				<form class="form-inline my-2 my-lg-0" method="get"
+					name="bbsSearchForm" action="BBSsearch.do">
 					<select class="custom-select my-1 mr-sm-2"
-						id="inlineFormCustomSelectPref">
-						<option selected value="bbsTitle">제목</option>
-						<option value="bbsContent">내용</option>
-						<option value="bbsWriter">작성자</option>
+						id="inlineFormCustomSelectPref" name="searchFilter">
+						<option selected value="bbsSearchTitle">제목</option>
+						<option value="bbsSearchContent">내용</option>
+						<option value="bbsSearchWriter">작성자</option>
 					</select> <input class="form-control mr-sm-2" type="search"
-						placeholder="검색어를 입력하세요" aria-label="Search" style="width: 100px;">
+						name="searchValue" placeholder="검색어를 입력하세요" aria-label="Search"
+						style="width: 100px;">
 					<button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
 				</form>
 			</div>

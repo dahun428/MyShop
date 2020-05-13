@@ -9,25 +9,51 @@ import com.MyshoppingMall.service.ListBbsService;
 public class BBSCommand implements Bcommand {
 
 	private ListBbsService service = new ListBbsService();
-	
+
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 
 		
+		String searchFilter = request.getParameter("searchFilter");
+		String searchValue = request.getParameter("searchValue");
 		String pageNoVal = request.getParameter("pageNo");
+		
 		int pageNo = 1;
 		if(pageNoVal != null) {
 			pageNo = Integer.parseInt(pageNoVal);
 		}
-		BbsPage bbsList = service.getBbsPage(pageNo);
-		request.setAttribute("bbsList", bbsList);
 		
+
 		
+		if (searchValue == null) {
+
+			BbsPage bbsList = service.getBbsPage(pageNo);
+			request.setAttribute("bbsList", bbsList);	
+			return;
+		}
+
+		BbsPage bbsListAddSearch = null;
+		if(searchFilter.equals("bbsSearchTitle")) {
+
+			bbsListAddSearch = service.getBbsPageByTitle(pageNo, searchValue);
+			bbsListAddSearch.setSearchValue(searchValue);
+			bbsListAddSearch.setSearchFilter(searchFilter);
+			request.setAttribute("bbsList", bbsListAddSearch);
+
+		} else if (searchFilter.equals("bbsSearchContent")) {
+
+			bbsListAddSearch = service.getBbsPageByContent(pageNo, searchValue);
+			bbsListAddSearch.setSearchValue(searchValue);
+			bbsListAddSearch.setSearchFilter(searchFilter);
+			request.setAttribute("bbsList", bbsListAddSearch);
+			
+		} else if (searchFilter.equals("bbsSearchWriter")) {
+			
+			bbsListAddSearch = service.getBbsPageByWriter(pageNo, searchValue);
+			bbsListAddSearch.setSearchValue(searchValue);
+			bbsListAddSearch.setSearchFilter(searchFilter);
+			request.setAttribute("bbsList", bbsListAddSearch);
+		}
+
 	}
-	public static void main(String[] args) {
-		ListBbsService service = new ListBbsService();
-		BbsPage bbsList = service.getBbsPage(1);
-		System.out.println(bbsList);
-	}
-	
 
 }

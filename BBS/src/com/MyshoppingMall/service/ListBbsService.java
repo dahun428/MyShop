@@ -13,21 +13,30 @@ public class ListBbsService {
 
 	private BbsDAO bbsDao = new BbsDAO();
 	private int size = 10;
-	
+
 	public BbsPage getBbsPage(int pageNum) {
-		try (Connection conn = ConnUtil.getConnection()){
-			int total = bbsDao.selectCount(conn);
-			List<Bbs> content = bbsDao.getList((pageNum-1) * size, pageNum * size);
-			
-			return new BbsPage(total, pageNum, size, content);
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+		
+		int total = bbsDao.selectCount();
+		List<Bbs> content = bbsDao.getList((pageNum-1) * size, pageNum * size);
+
+		return new BbsPage(total, pageNum, size, content);
 	}
-	public static void main(String[] args) {
-		ListBbsService service = new ListBbsService();
-		
-		System.out.println(service.getBbsPage(1));
-		
+	public BbsPage getBbsPageByTitle(int pageNum, String title) {
+			List<Bbs> contents = bbsDao.getListByTitle((pageNum-1) * size, pageNum * size, title);
+			int total = bbsDao.selectCount("title", title);
+
+			return new BbsPage(total, pageNum, size, contents);
+	}
+	public BbsPage getBbsPageByContent(int pageNum, String content) {
+			List<Bbs> contents = bbsDao.getListByContent((pageNum-1) * size, pageNum * size, content);
+			int total = bbsDao.selectCount("content", content);
+
+			return new BbsPage(total, pageNum, size, contents);
+	}
+	public BbsPage getBbsPageByWriter(int pageNum, String writer) {
+			List<Bbs> contents = bbsDao.getListByWriter((pageNum-1) * size, pageNum * size, writer);
+			int total = bbsDao.selectCount("writer", writer);
+
+			return new BbsPage(total, pageNum, size, contents);
 	}
 }

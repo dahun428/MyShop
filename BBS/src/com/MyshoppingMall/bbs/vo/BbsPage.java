@@ -11,6 +11,10 @@ public class BbsPage {
 	private int totalPage;
 	private int startPage;
 	private int endPage;
+	private String searchValue;
+	private String searchFilter;
+	
+	public BbsPage() {}
 	
 	public BbsPage(int total, int currentPage, int size, List<Bbs> content) {
 		this.total = total;
@@ -40,7 +44,55 @@ public class BbsPage {
 		}
 		
 	}
+	public BbsPage(int total, int currentPage, int size, List<Bbs> content, String searchFilter, String searchValue) {
+		this.total = total;
+		this.currentPage = currentPage;
+		this.content = content;
+		this.searchFilter = searchFilter;
+		this.searchValue = searchValue;
+		if (total == 0) {
+			
+			totalPage = 0;
+			startPage = 0;
+			endPage = 0;
+			
+		} else {
+			
+			totalPage = total / size;
+			if (total % size > 0) {
+				totalPage++;
+			}
+			int modVal = currentPage % 5;
+			startPage = currentPage / 5*5+1;
+			if (modVal == 0) {
+				startPage -= 5;
+			}
+			endPage = startPage + 4;
+			if(endPage > totalPage) {
+				endPage = totalPage;
+			}
+		}
+		
+	}
 
+	
+	public void setCurrentPage(int currentPage) {
+		this.currentPage = currentPage;
+	}
+
+	public void setSearchFilter(String searchFilter) {
+		this.searchFilter = searchFilter;
+	}
+	public String getSearchFilter() {
+		return searchFilter;
+	}
+	public String getSearchValue() {
+		return searchValue;
+	}
+	public void setSearchValue(String searchValue) {
+		this.searchValue = searchValue;
+	}
+	
 	public int getTotal() {
 		return total;
 	}
