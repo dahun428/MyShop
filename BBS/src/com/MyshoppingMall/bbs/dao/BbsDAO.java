@@ -22,48 +22,71 @@ public class BbsDAO {
 	public static BbsDAO getInstance() {
 		return instance;
 	}
-
-	public List<Bbs> getBbs(){
-
-		List<Bbs> lists = new ArrayList<Bbs>();
-
+	
+	public int updateBbs(Bbs bbs) {
+		
+		String query = "UPDATE BBS_BBS " + 
+				"    SET BBS_TITLE = ? , " + 
+				"        BBS_CONTENT = ?, " + 
+				"		 bbs_available = ? "+
+				"    WHERE BBS_ID = ? ";
+		
 		try {
-
-			String query = "select ROWNUM RWN,  A.BBS_ID, A.BBS_TITLE, A.USER_ID, A.bbs_date, A.BBS_CONTENT, A.BBS_AVAILABLE from "
-					+ "(select  BBS_ID, BBS_TITLE, USER_ID, to_char(BBS_DATE, 'yyyy/mm/dd') as bbs_date, BBS_CONTENT, BBS_AVAILABLE "
-					+ "from bbs_bbs order by bbs_id asc) A "
-					+ "order by ROWNUM desc ";
-
 			conn = ConnUtil.getConnection();
 			pstmt = conn.prepareStatement(query);
-			rs = pstmt.executeQuery();
-
-			while(rs.next()) {
-				Bbs bbs = resultSetForm(rs);
-				lists.add(bbs);
-			}
-
-
-		}catch(Exception e) {
-
+			pstmt.setString(1, bbs.getBbsTitle());
+			pstmt.setString(2, bbs.getBbsContent());
+			pstmt.setInt(3, bbs.getBbsAvailable());
+			pstmt.setInt(4, bbs.getBbsId());
+			pstmt.executeQuery();
+			
+			return BBSCheckFunction.BBS_WRITE_SUCCESS;
+		} catch (Exception e) {
 			e.printStackTrace();
-
-		}finally {
-
+		} finally {
 			try {
-				if(rs != null)rs.close();
 				if(pstmt != null) pstmt.close();
 				if(conn != null) conn.close();
 
-			}catch(Exception e) {
-
+			} catch(Exception e) {
 				e.printStackTrace();
 			}
 		}
-
-		return lists;
+		
+		return BBSCheckFunction.BBS_WRITE_FAIL;
 	}
+	
+	
+	public Bbs getBbsBybbsId(int bbsId) {
+		String query = "SELECT ROWNUM NO, BBS_ID, BBS_TITLE, USER_ID, to_char(BBS_DATE, 'yyyy/mm/dd')as bbs_date, BBS_CONTENT, BBS_AVAILABLE "
+				+ "	FROM BBS_BBS WHERE BBS_ID = ? AND BBS_AVAILABLE = 1 ";
+		
+		Bbs bbs = null;
+		try {
 
+			conn = ConnUtil.getConnection();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, bbsId);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				bbs = resultSetForm(rs);
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return bbs;
+	}
+	
 	public int addBbs(Bbs bbs) {
 
 		String query = "INSERT INTO BBS_BBS (BBS_ID, BBS_TITLE, USER_ID, BBS_DATE, BBS_CONTENT, BBS_AVAILABLE)" + 
@@ -82,7 +105,6 @@ public class BbsDAO {
 			e.printStackTrace();
 		} finally {
 			try {
-
 				if(pstmt != null) pstmt.close();
 				if(conn != null) conn.close();
 
@@ -95,18 +117,16 @@ public class BbsDAO {
 	}
 	public List<Bbs> getListByTitle(int startRow, int size, String title){
 		List<Bbs> lists = new ArrayList<Bbs>();
-		String query = "SELECT NO, BBS_ID, BBS_TITLE, USER_ID, to_char(BBS_DATE, 'yyyy/mm/dd')as bbs_date, BBS_CONTENT, BBS_AVAILABLE " + 
-				"FROM ( " + 
+		String query = "SELECT NO, BBS_ID, BBS_TITLE, USER_ID, bbs_date, BBS_CONTENT, BBS_AVAILABLE FROM ( " + 
 				"    SELECT ROWNUM ROWN, B.* FROM ( " + 
-				"        SELECT * FROM ( " + 
-				"            SELECT ROWNUM AS NO, A.* " + 
-				"            FROM BBS_BBS A " + 
-				"            WHERE bbs_available= 1 " + 
-				" 			 AND bbs_title LIKE '%'|| ? ||'%' " +
-				"            ORDER BY bbs_id desc ) " + 
-				"        ORDER BY NO DESC ) B " + 
-				"    WHERE ROWNUM <= ? " + 
-				") " + 
+				"        SELECT ROWNUM AS NO, A.* FROM ( " + 
+				"            SELECT BBS_ID, BBS_TITLE, USER_ID, to_char(BBS_DATE, 'yyyy/mm/dd')as bbs_date, BBS_CONTENT, BBS_AVAILABLE " + 
+				"            FROM BBS_BBS " + 
+				"            WHERE bbs_available = 1 " + 
+				"            AND bbs_title LIKE '%'|| ? ||'%' " + 
+				"            ORDER BY BBS_ID asc) A " + 
+				"        ORDER BY NO desc) B " + 
+				"    WHERE ROWNUM <= ? ) " + 
 				"WHERE ROWN > ? ";
 		try {
 			conn = ConnUtil.getConnection();
@@ -139,18 +159,16 @@ public class BbsDAO {
 	}
 	public List<Bbs> getListByContent(int startRow, int size, String content){
 		List<Bbs> lists = new ArrayList<Bbs>();
-		String query = "SELECT NO, BBS_ID, BBS_TITLE, USER_ID, to_char(BBS_DATE, 'yyyy/mm/dd')as bbs_date, BBS_CONTENT, BBS_AVAILABLE " + 
-				"FROM ( " + 
+		String query = "SELECT NO, BBS_ID, BBS_TITLE, USER_ID, bbs_date, BBS_CONTENT, BBS_AVAILABLE FROM ( " + 
 				"    SELECT ROWNUM ROWN, B.* FROM ( " + 
-				"        SELECT * FROM ( " + 
-				"            SELECT ROWNUM AS NO, A.* " + 
-				"            FROM BBS_BBS A " + 
-				"            WHERE bbs_available= 1 " + 
-				" 			 AND bbs_content LIKE '%'|| ? ||'%' " +
-				"            ORDER BY bbs_id desc ) " + 
-				"        ORDER BY NO DESC ) B " + 
-				"    WHERE ROWNUM <= ? " + 
-				") " + 
+				"        SELECT ROWNUM AS NO, A.* FROM ( " + 
+				"            SELECT BBS_ID, BBS_TITLE, USER_ID, to_char(BBS_DATE, 'yyyy/mm/dd')as bbs_date, BBS_CONTENT, BBS_AVAILABLE " + 
+				"            FROM BBS_BBS " + 
+				"            WHERE bbs_available = 1 " + 
+				"            AND bbs_content LIKE '%'|| ? ||'%' " + 
+				"            ORDER BY BBS_ID asc) A " + 
+				"        ORDER BY NO desc) B " + 
+				"    WHERE ROWNUM <= ? ) " + 
 				"WHERE ROWN > ? ";
 		try {
 			conn = ConnUtil.getConnection();
@@ -183,18 +201,16 @@ public class BbsDAO {
 	}
 	public List<Bbs> getListByWriter(int startRow, int size, String writer){
 		List<Bbs> lists = new ArrayList<Bbs>();
-		String query = "SELECT NO, BBS_ID, BBS_TITLE, USER_ID, to_char(BBS_DATE, 'yyyy/mm/dd')as bbs_date, BBS_CONTENT, BBS_AVAILABLE " + 
-				"FROM ( " + 
+		String query = "SELECT NO, BBS_ID, BBS_TITLE, USER_ID, bbs_date, BBS_CONTENT, BBS_AVAILABLE FROM ( " + 
 				"    SELECT ROWNUM ROWN, B.* FROM ( " + 
-				"        SELECT * FROM ( " + 
-				"            SELECT ROWNUM AS NO, A.* " + 
-				"            FROM BBS_BBS A " + 
-				"            WHERE bbs_available= 1 " + 
-				" 			 AND USER_ID = ? " +
-				"            ORDER BY bbs_id desc ) " + 
-				"        ORDER BY NO DESC ) B " + 
-				"    WHERE ROWNUM <= ? " + 
-				") " + 
+				"        SELECT ROWNUM AS NO, A.* FROM ( " + 
+				"            SELECT BBS_ID, BBS_TITLE, USER_ID, to_char(BBS_DATE, 'yyyy/mm/dd')as bbs_date, BBS_CONTENT, BBS_AVAILABLE " + 
+				"            FROM BBS_BBS " + 
+				"            WHERE bbs_available = 1 " + 
+				"            AND USER_ID = ? " + 
+				"            ORDER BY BBS_ID asc) A " + 
+				"        ORDER BY NO desc) B " + 
+				"    WHERE ROWNUM <= ? ) " + 
 				"WHERE ROWN > ? ";
 		try {
 			conn = ConnUtil.getConnection();
@@ -225,21 +241,19 @@ public class BbsDAO {
 
 		return lists;
 	}
-	public List<Bbs> getList(int startRow, int size){
+	public List<Bbs> getAllList(int startRow, int size){
 
 
 		List<Bbs> lists = new ArrayList<Bbs>();
-		String query = "SELECT NO, BBS_ID, BBS_TITLE, USER_ID, to_char(BBS_DATE, 'yyyy/mm/dd')as bbs_date, BBS_CONTENT, BBS_AVAILABLE " + 
-				"FROM ( " + 
+		String query = "SELECT NO, BBS_ID, BBS_TITLE, USER_ID, bbs_date, BBS_CONTENT, BBS_AVAILABLE FROM ( " + 
 				"    SELECT ROWNUM ROWN, B.* FROM ( " + 
-				"        SELECT * FROM ( " + 
-				"            SELECT ROWNUM AS NO, A.* " + 
-				"            FROM BBS_BBS A \r\n" + 
-				"            WHERE bbs_available= 1 " + 
-				"            ORDER BY bbs_id desc ) " + 
-				"        ORDER BY NO DESC ) B " + 
-				"    WHERE ROWNUM <= ? " + 
-				") " + 
+				"        SELECT ROWNUM AS NO, A.* FROM ( " + 
+				"            SELECT BBS_ID, BBS_TITLE, USER_ID, to_char(BBS_DATE, 'yyyy/mm/dd')as bbs_date, BBS_CONTENT, BBS_AVAILABLE " + 
+				"            FROM BBS_BBS \r\n" + 
+				"            WHERE bbs_available = 1 " + 
+				"            ORDER BY BBS_ID asc) A " + 
+				"        ORDER BY NO desc) B " + 
+				"    WHERE ROWNUM <= ?) " + 
 				"WHERE ROWN > ? ";
 		try {
 			conn = ConnUtil.getConnection();

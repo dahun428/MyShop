@@ -32,10 +32,10 @@
 	%>
 
 	<%@include file="../View_page_file/navPage.jsp"%>
-
+	
 	<div class="container">
 		<div style="margin: 3rem;">
-			<form action="BBSwrite.do" method="post" name="BBSwriteForm">
+			<form action="BBSupdate.do" method="post" name="BBSwriteForm">
 				<table class="table table-stripted"
 					style="text-align: center; border: 1px solid #dddddd;">
 					<thead>
@@ -47,21 +47,22 @@
 					<tbody>
 						<tr>
 							<td><input type="text" class="form-control"
-								placeholder="글제목" name="bbsTitle" maxlength="50" /></td>
+								name="bbsTitle" maxlength="50" value="${bbs.bbsTitle }"/></td>
 						</tr>
 						<tr>
-							<td><textarea class="form-control" placeholder="글내용"
-									name="bbsContent" maxlength="2048" style="height: 350px;" /></textarea></td>
+							<td><textarea  class="form-control" placeholder="글내용"
+									name="bbsContent" maxlength="2048" style="height: 350px;"><c:out value="${bbs.bbsContent }"/></textarea></td>
 						</tr>
 					</tbody>
 				</table>
-				<input type="button" class="btn btn-dark pull-right" value="글쓰기"
+				<input type="hidden" name="bbsId" value="${bbs.bbsId }" />
+				<input type="button" class="btn btn-dark pull-right" value="수정하기"
 					onclick="bbsInfoConfirm();" />
 			</form>
 		</div>
 	</div>
 	<%@include file="../View_page_file/footerPage.jsp"%>
-
+	
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
 	<script src="js/bootstrap.js"></script>
 </body>

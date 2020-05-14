@@ -20,7 +20,7 @@
 	<c:when test="${isSuccess == BBSCheckFunction.BBS_WRITE_SUCCESS }">
 		<script>
 			alert('글이 성공적으로 작성되었습니다.');
-			location.href ="BBSviewPage.do";
+			location.href ='BBSmainPage.do';
 		</script>
 	</c:when>
 	<c:when test="${isSuccess == BBSCheckFunction.BBS_DATABASE_ERROR }">
@@ -29,6 +29,12 @@
 			history.go(-1);
 		</script>
 	</c:when>
+	<c:otherwise>
+		<script>
+			alert('비정상적인 접근입니다.');
+			location.href ='index.do';
+		</script>
+	</c:otherwise>
 </c:choose>
 
 

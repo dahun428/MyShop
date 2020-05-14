@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
+	pageEncoding="utf-8"%>
 <%
 request.setCharacterEncoding("utf-8");
 session.invalidate();
@@ -11,9 +11,10 @@ session.invalidate();
 <title>Insert title here</title>
 </head>
 <body>
+
 <script type="text/javascript">
-alert('로그아웃되었습니다.');
-location.href='index.do';
+	alert('로그아웃되었습니다.');
+	location.href='index.do';
 </script>
 </body>
 </html>

@@ -4,11 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.MyshoppingMall.bbs.vo.BbsPage;
-import com.MyshoppingMall.service.ListBbsService;
+import com.MyshoppingMall.service.BbsService;
 
 public class BBSCommand implements Bcommand {
 
-	private ListBbsService service = new ListBbsService();
+	private BbsService service = new BbsService();
 
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 
@@ -21,8 +21,6 @@ public class BBSCommand implements Bcommand {
 		if(pageNoVal != null) {
 			pageNo = Integer.parseInt(pageNoVal);
 		}
-		
-
 		
 		if (searchValue == null) {
 

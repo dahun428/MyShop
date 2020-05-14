@@ -29,7 +29,6 @@ request.setCharacterEncoding("utf-8");
 			location.href='index.do';
 		</script>
 	</c:when>
-	
 </c:choose>
 
 

@@ -10,9 +10,7 @@ if(session.getAttribute("userId") != null){
 	userId = (String) session.getAttribute("userId");
 }
 %>
-    
 
-    
 <!DOCTYPE html>
 <html>
 <head>

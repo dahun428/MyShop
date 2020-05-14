@@ -25,7 +25,9 @@ public class BBSWriteCommand implements Bcommand {
 		User user = new User();
 		user.setUserId(userId);
 		bbs.setUser(user);
+		
 		int isSuccess = bbsDao.addBbs(bbs);
+		
 		if(isSuccess == BBSCheckFunction.BBS_WRITE_SUCCESS) {
 			request.setAttribute("isSuccess", BBSCheckFunction.BBS_WRITE_SUCCESS);
 		} else {

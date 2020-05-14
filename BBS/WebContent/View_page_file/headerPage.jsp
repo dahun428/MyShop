@@ -18,7 +18,7 @@
 	<div class="navbar navbar-dark bg-dark">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a href="#" class="navbar-brand navbar-center">The Mall<i class="far fa-heart"></i></a>
+				<a href="index.jsp" class="navbar-brand navbar-center">The Mall<i class="far fa-heart"></i></a>
 				
 			</div>
 			<div>

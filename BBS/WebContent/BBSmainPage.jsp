@@ -48,7 +48,7 @@
 					<c:forEach items="${bbsList.content }" var="bbs">
 						<tr>
 							<td>${bbs.bbsNo}</td>
-							<td><c:out value="${bbs.bbsTitle }" /></td>
+							<td><a href="BBSviewPage.do?bbsId=${bbs.bbsId }">${bbs.bbsTitle }</a></td>
 							<td>${bbs.user.userId }</td>
 							<td>${bbs.bbsDate }</td>
 						</tr>

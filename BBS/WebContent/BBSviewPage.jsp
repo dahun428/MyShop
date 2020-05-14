@@ -1,3 +1,4 @@
+<%@page import="com.MyshoppingMall.bbs.util.BBSCheckFunction"%>
 <%@page import="com.MyshoppingMall.bbs.vo.Bbs"%>
 <%@page import="java.util.List"%>
 <%@page import="java.io.PrintWriter"%>
@@ -26,37 +27,85 @@
 		PrintWriter writer = response.getWriter();
 		writer.println("<script>");
 		writer.println("alert('로그인이 필요한 페이지입니다.');");
-		writer.println("history.go(-1);");
+		writer.println("location.href='loginPage.jsp';");
 		writer.println("</script>");
 	}
+	
 	%>
-
+	<%@include file="../CheckPage/bbsViewCheck.jsp"%>
 	<%@include file="../View_page_file/navPage.jsp"%>
-
+	
 	<div class="container">
 		<div style="margin: 3rem;">
+
+			<table class="table table-stripted"
+				style="text-align: center; border: 1px solid #dddddd;">
+				<thead>
+					<tr>
+						<th colspan="4" style="background-color: #eeeeee; text-align: center;">게시판 글보기</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td style="width:20%; background-color: #eeeeee;">제목</td>
+						<td><c:out value="${bbs.bbsTitle }"/></td>
+						<td style="background-color: #eeeeee;">게시글 번호</td>
+					<td>
+						<c:out value="${bbs.bbsId }"/>
+					</td>
+					</tr>
+					<tr>
+						<td style="background-color: #eeeeee;">작성자</td>
+						<td>${bbs.user.userId }</td>
+						<td style="background-color: #eeeeee;">작성일자</td>
+						<td>${bbs.bbsDate }</td>
+					</tr>
+					<tr>
+						<td colspan="4" style="background-color: #eeeeee;">내용</td>
+					</tr>
+					<tr>
+						<td colspan="4" style="min-height:200px; text-align:left;"><c:out value="${bbs.bbsContent }"/></td>
+					</tr>
+				</tbody>
+			</table>
 			
-				<table class="table table-stripted"
-					style="text-align: center; border: 1px solid #dddddd;">
-					<thead>
-						<tr>
-							<th style="background-color: #eeeeee; text-align: center;">게시판
-								글쓰기 양식</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><input type="text" class="form-control"
-								placeholder="글제목" name="bbsTitle" maxlength="50" /></td>
-						</tr>
-						<tr>
-							<td><textarea class="form-control" placeholder="글내용"
-									name="bbsContent" maxlength="2048" style="height: 350px;" /></textarea></td>
-						</tr>
-					</tbody>
-				</table>
-				<input type="button" class="btn btn-dark pull-right" value="글쓰기" onclick="bbsInfoConfirm();"/>
-		
+			<a href="BBSmainPage.do" class="btn btn-primary">목록</a>
+			<c:if test="${userId eq bbs.user.userId }">
+				<a href="BBSupdatePage.do?bbsId=${bbs.bbsId }" class="btn btn-primary">수정</a>
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete_modal">삭제</button>
+			</c:if>
+			<div class="modal fade" id="delete_modal" tabindex="-1" role="dialog"
+				aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="myModalLabel">해당 글을 삭제하시겠습니까?</h4>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+							<form action="BBSdelet.do" method="post">
+								<div class="jumbotron">
+									<div class="form-group">
+										<input type="text" class="form-control" placeholder="아이디"
+										name="userId" maxlength="20" />
+									</div>
+									<div class="form-group">
+										<input type="password" class="form-control" placeholder="비밀번호"
+										name="userPassword" maxlength="20" />
+									</div>
+								</div>
+								 <div class="modal-footer">
+									<input type="hidden" name="bbsId" value="${bbs.bbsId }" />
+									<button type="button" class="btn btn-default"
+									data-dismiss="modal">취소</button>
+									<button type="submit" class="btn btn-primary">삭제</button>
+								</div>
+							</form>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<%@include file="../View_page_file/footerPage.jsp"%>
